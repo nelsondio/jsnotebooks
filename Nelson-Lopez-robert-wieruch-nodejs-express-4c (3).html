@@ -1,0 +1,1902 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<title>Nelson-Lopez-robert-wieruch-nodejs-express-4c</title>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+  font-family: 'Arial';
+}
+
+body {
+  color: #333;
+  font-weight: 100;
+  max-width: 95%;
+  margin: 0 1em;
+}
+
+div:focus {
+  outline: none;
+}
+
+#heading {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding-top: .5em;
+}
+
+#content {
+  padding-top: .5em;
+  font-size: 1em;
+}
+
+.box0 {
+  vertical-align: text-top;
+  cursor: text;
+  display: inline-block;
+  font-size: 1.1em;
+  border: 1px inset #aaa;
+  width: 95%;
+  margin: 1px;
+  padding: 2px;
+  min-height: 1em;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  resize: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.box1 {
+  display:inline-block;
+  width: 90%;
+  vertical-align:top;
+}
+
+.box2 {
+  cursor: text;
+  display:inline-block;
+  font-size: 1.1em;
+  border: 1px inset #aaa;
+  width: 95%;
+  margin: 1px;
+  padding: 2px;
+  min-height: 1em;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  resize: none;
+}
+
+.buttonactive {
+  appearance: push-button !important;
+  background-color: SkyBlue;
+}
+</style>
+<script id="mainscript" language="JavaScript" type="text/javascript"><!--
+var idcntr=0;
+var blkid=null;
+var title;
+var values = [];
+var curout = null;
+var evalfn = eval;
+
+
+function pagestartup() {
+  title = decodeURIComponent(document.URL.match(/\/([^\.\/]*)[^\/]*$/)[1]) || 'JS';
+  document.getElementById('heading').innerHTML = title;
+  document.getElementsByTagName("title")[0].innerHTML = title;
+
+  idcntr = 0;
+  while (true) {
+    b = document.getElementById("b"+idcntr);
+    if (b === null) { break; }
+    blk_resizing(b);
+    idcntr++;
+  }
+  document.getElementById("downloader").href = "missing";
+  document.getElementById("downloader").download = "missing";
+}
+
+function textarearesize(ta) {
+  var h,a,y,ny;
+  y = window.pageYOffset;
+  ta.style.height = 'auto';
+  h = ta.scrollHeight;
+  h -= 4; // twice the padding
+  ta.style.height = h+'px';
+  ny = window.pageYOffset;
+  if (ny < y-40 || y+40 < ny) { // no big jumps
+    window.scrollTo(window.pageXoffset,y);
+    setTimeout(function(){ window.scrollTo(window.pageXoffset,y); },60);
+  }
+}
+
+function blkresize(b) {
+  var d,e;
+  d = b.childNodes[1];
+  if (6<=d.childNodes.length) {
+    e = d.childNodes[5];
+    if ("TEXTAREA" === e.nodeName) { textarearesize(e); }
+    if (1<=d.childNodes[6].childNodes.length) {
+      e = d.childNodes[6].childNodes[0];
+      if ("TEXTAREA" === e.nodeName) { textarearesize(e); }
+    }
+  }
+}
+
+function textarea_resizing(ta) {
+  function resize () {
+    textarearesize(ta);
+  }
+  function delayedResize () {
+    window.setTimeout(resize, 0);
+  }
+  ta.addEventListener('change',resize,false);
+  ta.addEventListener('cut',delayedResize,false);
+  ta.addEventListener('paste',delayedResize,false);
+  ta.addEventListener('drop',delayedResize,false);
+  ta.addEventListener('keydown',delayedResize,false);
+  textarearesize(ta);
+}
+
+function blk_resizing(b) {
+  var d,e;
+  d = b.childNodes[1];
+  if (6<=d.childNodes.length) {
+    e = d.childNodes[5];
+    if ("TEXTAREA" === e.nodeName) { textarea_resizing(e); }
+    if (1<=d.childNodes[6].childNodes.length) {
+      e = d.childNodes[6].childNodes[0];
+      if ("TEXTAREA" === e.nodeName) { textarea_resizing(e); }
+    }
+  }
+}
+
+function clear_content(ev,th) {
+  idcntr = 0;
+  blkid = null;
+  values = [];
+  document.getElementById('content').innerHTML = "";
+}
+
+function toggle_rw(ev,th) {
+  var c;
+  c = document.getElementById('content');
+  if ("true" === c.contentEditable) {
+    c.contentEditable = false;
+    document.getElementById('RORW').value = "RO>RW";
+  } else {
+    c.contentEditable = true;
+    document.getElementById('RORW').value = "RW>RO";
+  }
+}
+
+function add_block(ev,th) {
+  var txt,d,c,idnum,x;
+  c = document.getElementById('content');
+  idnum = idcntr;
+  idcntr++;
+txt = '['+idnum+']:&nbsp;<span class="box1">\
+<input type="button" value="go" onclick="button_flash(go_block,event,this);" class="">\
+<input type="button" value="txt" onclick="show_block(event,this);">\
+<input type="button" value="clr" onclick="clr_block(event,this);">\
+<input type="button" value="-" onclick="vis_block(event,this);"><br>\
+<textarea id="b'+idnum+'_in" class="box0" rows=1 cols=110></textarea>\
+<div></div></span>';
+  d = document.createElement("DIV");
+  d.id = "b"+idnum;
+  d.innerHTML = txt;
+  c.appendChild(d);
+  x=document.createElement("P");
+  x.style = "margin: .75em";
+  c.appendChild(x);
+  values[idnum] = undefined;
+  blk_resizing(d);
+  d.childNodes[1].childNodes[5].focus();
+  return undefined;
+}
+
+function deletelast_block(ev,th) {
+  var d,gid,aid;
+  d = document.getElementById('content');
+  if (null === d.lastChild) { return; }
+  idcntr--;
+  gid = "b"+idcntr;
+  while (1) {
+    aid = d.lastChild.id;
+    d.removeChild(d.lastChild);
+    if (gid === aid) { break; }
+  }
+  values[idcntr] = undefined;
+}
+
+function put(s) {
+  if (null === curout) {
+    console.log(s);
+  } else {
+    curout.value += s;
+    textarearesize(curout);
+  }
+  return s;
+}
+
+function eval_script(scr) {
+  var val,errmsg;
+  try {
+    val = evalfn(scr);
+  } catch (errmsg) {
+    val = "Error: " + errmsg;
+  }
+  return val;
+}
+
+function eval_block(blk) {
+  var scr,val,e,x,b,d;
+  scr = blk.childNodes[1].childNodes[5].value;
+  blkid = blk.id;
+  d = blk.childNodes[1].childNodes[6];
+  if (1<=d.childNodes.length && d.childNodes[0].id === undefined) {
+    d.innerHTML = "";
+  }
+  if (d.childNodes.length<1) {
+    x = document.createElement("TEXTAREA");
+    x.id = blkid + "_val";
+    x.className = "box2";
+    x.rows = 1;
+    x.cols = 110;
+    d.appendChild(x);
+    textarea_resizing(x);
+  } else {
+    x = d.childNodes[0];
+  }
+  x.value = "";
+  textarearesize(x)
+  curout = x;
+  val = eval_script(scr);
+  x.value += val;
+  textarearesize(x)
+  b = +(blkid.replace(/^b/,""));
+  values[b] = val;
+  return undefined;
+}
+
+function button_flash(fn,ev,th) {
+  th.className = "buttonactive";
+  setTimeout(function() { fn(ev,th); }, 20);
+}
+
+function button_active(th) { th.className = "buttonactive"; }
+function button_reset(th) { th.className = ""; }
+
+function go_block(ev,th) {
+  var blk,txt,d;
+  blk = th.parentNode.parentNode;
+  eval_block(blk);
+  button_reset(th);
+}
+
+function golast_block(ev,th) {
+  var blk,txt,d;
+  blk = document.getElementById("b"+(idcntr-1));
+  if (null === blk) {
+    button_reset(th);
+    return;
+  }
+  eval_block(blk);
+  button_reset(th);
+}
+
+function goadd_block(ev,th) {
+  golast_block(ev,th);
+  add_block(ev,th);
+}
+
+function show_block(ev,th) {
+  var txt,d;
+  txt = th.parentNode.childNodes[5].value;
+  d = th.parentNode.childNodes[6];
+  d.innerHTML = txt;
+  return undefined;
+}
+
+function clr_block(ev,th) {
+  var t,d,x,p;
+  d = th.parentNode.childNodes[6];
+  if (1<=d.childNodes.length && (d.childNodes[0].id === "" || d.childNodes[0].id === undefined)) {
+    d.innerHTML = "";
+  }
+  if (d.childNodes.length<1) {
+    x = document.createElement("TEXTAREA");
+    x.id = blkid + "_val";
+    x.className = "box2";
+    x.rows = 1;
+    x.cols = 110;
+    d.appendChild(x);
+  } else {
+    x = d.childNodes[0];
+  }
+  x.value = "";
+  textarearesize(x);
+  p = th.parentNode;
+  t = p.childNodes[5];
+  t.className = "box0";
+  p.childNodes[0].className = "";
+  p.childNodes[1].className = "";
+  p.childNodes[2].className = "";
+  p.childNodes[3].value = "-";
+}
+
+function vis_block(ev,th) {
+  var t,p;
+  p = th.parentNode;
+  t = p.childNodes[5];
+  if ("box0" === t.className) {
+    t.className = "hidden";
+    p.childNodes[0].className = "hidden";
+    p.childNodes[1].className = "hidden";
+    p.childNodes[2].className = "hidden";
+    p.childNodes[3].value = "+";
+  } else {
+    t.className = "box0";
+    p.childNodes[0].className = "";
+    p.childNodes[1].className = "";
+    p.childNodes[2].className = "";
+    p.childNodes[3].value = "-";
+  }
+  blkresize(p.parentNode);
+}
+
+function str(n) {
+  var e;
+  e = document.getElementById("b"+n+"_val");
+  if (null === e) {
+    e = document.getElementById("b"+n);
+    if (null === e) {
+      return "";
+    } else {
+      return e.childNodes[1].childNodes[5].value;
+    }
+  } else {
+    return e.value;
+  }
+}
+
+function res(n) {
+  var e,v;
+  if (undefined === values[n]) {
+    e = document.getElementById("b"+n+"_val");
+    if (null === e) {
+      return "";
+    } else {
+      v = e.value;
+    }
+    if ("" !== v) {
+      if (isNaN(+v)) {
+        return v;
+      }
+      else {
+        return +v;
+      }
+    } else {
+      return "";
+    }
+  }
+  return values[n];
+}
+
+function expr(n) {
+  var e;
+  e = document.getElementById("b"+n);
+  if (null === e) {
+    return ""
+  } else {
+    return e.childNodes[1].childNodes[5].value;
+  }
+}
+
+function last() {
+  var b;
+  if (null === blkid) { return null; }
+  b = blkid.replace(/^b/,"");
+  return res(b-1);
+}
+
+function final() {
+  return values[idcntr-1];
+}
+
+function store_content(ev,th) {
+  var fn,p,save_link,b;
+  update_all();
+  save_link = document.getElementById("downloader");
+  if ("missing" !== save_link.href) {
+    window.URL.revokeObjectURL(save_link.href);
+    save_link.href = "missing";
+  }
+  save_link.download = "missing";
+  fn = document.URL.match(/\/([^\/]*)$/)[1];
+  b = window.document.documentElement.outerHTML;
+  p = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n    "http://www.w3.org/TR/html4/strict.dtd">\n' + b;
+  p = p.replace(/\n\n\n+<\/body><\/html>/,"\n\n</body></html>");
+  blob = new Blob([String.fromCharCode(0xFEFF),p],{type: "text/html;charset=" + document.characterSet});
+  save_link.href = window.URL.createObjectURL(blob);
+  save_link.download = fn;
+}
+
+function write_doc(txt) {
+  var b;
+  document.open();
+  document.write(txt);
+  document.close();
+  idcntr = 0;
+  while (true) {
+    b = document.getElementById("b"+idcntr);
+    if (b === null) { break; }
+    blk_resizing(b);
+    idcntr++;
+  }
+  blkid = null;
+  values = [];
+}
+
+function restore_content(ev,th) {
+  var rdr
+  if (undefined === window.blob) return;
+  rdr = new FileReader();
+  rdr.addEventListener("loadend",function(e) { write_doc(e.srcElement.result) });
+  rdr.readAsText(blob);
+}
+
+function do_all(ev,th) {
+  var blk,txt,d,index,v;
+  for (index=0; index<idcntr; index++) {
+    blk = document.getElementById("b"+index);
+    if (null === blk) { continue; }
+    d = blk.childNodes[1].childNodes[5];
+    txt = d.value;
+    v = document.getElementById("b"+index+"_val");
+    if (! txt.match(/^</) || (null != v && "TEXTAREA" === v.nodeName)) {
+      eval_block(blk);
+    } else {
+      d.parentNode.childNodes[6].innerHTML = txt;
+    }
+  }
+  button_reset(th);
+}
+
+function update_all() {
+  var blk,d,index,v;
+  for (index=0; index<idcntr; index++) {
+    blk = document.getElementById("b"+index);
+    if (null === blk) { continue; }
+    d = blk.childNodes[1].childNodes[5];
+    d.textContent = d.value;
+    v = document.getElementById("b"+index+"_val");
+    if (null != v && "TEXTAREA" === v.nodeName) {
+      v.textContent = v.value;
+    }
+  }
+}
+--></script>
+</head>
+<body>
+
+<span id="heading" style="display:inline-block;margin-bottom: .5em;">Nelson-Lopez-robert-wieruch-nodejs-express-4c</span>
+
+<span style="display:inline-block;float:right;margin-top: .8em;">
+<input id="RORW" type="button" value="RW>RO" onclick="toggle_rw(event,this);">
+<input type="button" value="clear" onclick="clear_content(event,this);">
+<input type="button" value="store" onclick="store_content(event,this);">
+<input type="button" value="restore" onclick="restore_content(event,this);">
+<a id="downloader" href="missing" download="missing" target="_blank"><input type="button" value="save" onclick="store_content(event,this);"></a>
+</span>
+<br>
+
+<input type="button" value="add" onclick="add_block(event,this);" style="margin-top: .8em; margin-bottom: .5em;">
+
+<div id="content" contenteditable="true"><div id="b0">[0]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b0_in" class="hidden" rows="1" cols="110" style="height: auto;">&lt;style&gt;p,pre {background-color:#bbb; } .superimportant {background-color:red; color:white;} .pending {
+  animation-duration: 3s;
+  animation-name: slidein;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}&lt;/style&gt;
+</textarea><div><textarea id="null_val" class="box2" rows="1" cols="110" style="height: 26px;"></textarea></div></span></div><p style="margin: 0.75em;"></p><div id="b1">[1]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class=""><input type="button" value="txt" onclick="show_block(event,this);" class=""><input type="button" value="clr" onclick="clr_block(event,this);" class=""><input type="button" value="-" onclick="vis_block(event,this);"><br><textarea id="b1_in" class="box0" rows="1" cols="110" style="height: 51px;">&lt;h1&gt;https://www.robinwieruch.de/node-js-express-tutorial part 2 of 3&lt;/h1&gt;</textarea><div><h1>https://www.robinwieruch.de/node-js-express-tutorial</h1></div></span></div><p style="margin: 0.75em;"></p><div id="b2">[2]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b2_in" class="hidden" rows="1" cols="110" style="height: auto;">s tutorial is part 2 of 2 in this series.
+
+Part 1: The minimal Node.js with Babel Setup
+Express.js is the most popular choice when it comes to building web applications with Node.js. However, when saying web applications with Node.js, it's often not for anything visible in the browser (excluding server-side rendering of a frontend application). Instead, Express.js, a web application framework for Node.js, enables you to build server applications in Node.js. As a backend application, it is the glue between your frontend application and a potential database or other data sources (e.g. REST APIs, GraphQL APIs). Just to give you an idea, the following is a list of tech stacks to build client-server architectures:
+
+React.js (Frontend) + Express.js (Backend) + PostgreSQL (Database)
+Vue.js (Frontend) + Koa.js (Backend) + MongoDB (Database)
+Angular.js (Frontend) + Hapi.js (Backend) + Neo4j (Database)
+Express.js is exchangeable with other web application frameworks for the backend the same way as React.js is exchangeable with Vue.js and Angular.js when it comes to frontend applications. The Node.js ecosystem doesn't offer only one solution, but various solutions that come with their strengths and weaknesses. However, for this application we will use a Express server, because it is the most popular choice when it comes to building JavaScript backend applications with Node.js.
+
+The Node.js application from before comes with a watcher script to restart your application once your source code has changed, Babel to enable JavaScript features that are not supported in Node.js yet, and environment variables for your application's sensitive information. That's a great foundation to get you started with Express.js in Node.js. Let's continue by installing Express.js in your Node.js application from before on the command line:
+
+npm install express
+Now, in your src/index.js JavaScript file, use the following code to import Express.js, to create an instance of an Express application, and to start it as Express server:
+
+import express from 'express';
+ 
+const app = express();
+ 
+app.listen(3000, () =&gt;
+  console.log('Example app listening on port 3000!'),
+);
+Once you start your application on the command line with npm start, you should be able to see the output in the command line:
+
+Example app listening on port 3000!
+Your Express server is up and running. Everything that should happen after your Express application has started goes into the callback function. The method itself takes another parameter as first parameter which is the port of the running application. That's why after starting it, the application is available via http://localhost:3000 in the browser, although nothing should be available at this URL yet when you visit it in your browser.
+
+Routes in Express.js
+Routes in web applications for the backend are used to map URIs to middleware. These URIs could serve a text message, a HTML page, or data in JSON via REST or GraphQL. In a larger application, this would mean having several routes (middleware) which map to several URIs. In Express, a middleware is everything needed for a route, because routes are just another abstraction on top. Let's set up such a single route with Express:
+
+import express from 'express';
+ 
+const app = express();
+ 
+app.get('/', (req, res) =&gt; {
+  res.send('Hello World!');
+});
+ 
+app.listen(3000, () =&gt;
+  console.log('Example app listening on port 3000!'),
+);
+The route points to the root (/) of your domain. In the browser, you can visit this route with http://localhost:3000/ or http://localhost:3000 without the trailing slash. Once you save the file, the application should restart automatically due to our setup. You can verify it on the command line. Afterward, visit the browser to see what it outputs for you. You should see the printed "Hello World!" there. In our code, we are using the res object's send method to send something back to our client application. Whereas the res object is everything we need related to specifiyng a response for our client, the req object is everything we get from this particular request from our client. That's it for your first route in Express.js. We will learn more about routes and how to interact with them later.
+
+Essentially every Express application is a just a series of routing and middleware function calls. You have seen the former, the routing with a single route, previously for the http://localhost:3000 URL or / route. You can extend the application with additional URIs (e.g. http://localhost:3000/example) by using routes in Express.js (e.g. /example) as shown before. Try it yourself!
+
+Middleware in Express.js
+If an Express application consists of routing and middleware function calls as mentioned before, what about the middleware function calls then? There are two kinds of middleware in Express.js: application-level middleware and router-level middleware. Let's explore an application-level middleware in this section with a neat use case and dive deeper into the other aspects of both application-level and router-level middleware later.
+
+When using Express.js, people often run into the following error in the browser when accessing their Express application:
+
+"Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:3000/. (Reason: CORS header ‘Access-Control-Allow-Origin’ missing)."
+It most likely happens because we are accessing a domain from a foreign domain. Cross-origin resource sharing (CORS) was invented to secure web applications on a domain level. The idea: It shouldn't be possible to access data from other domains. For instance, a web application with the domain https://example.com shouldn't be allowed to access another web application with https://website.com by default. CORS is used to restrict access between web applications.
+
+Now, we can allow CORS by adding this missing CORS header, because we will run eventually into this error ourselves when implementing a consuming client application for our Express server. However, since we don't want to do this manually for every route, we can use an application-level middleware to add the CORS HTTP header to every request by default. Therefore, we could write a middleware ourselves -- we will see how this works later -- or use an off the shelf Express.js middleware library which is doing the job for us:
+
+npm install cors
+Next use it as a application-wide middleware by providing it to the Express instance's use method:
+
+import 'dotenv/config';
+import cors from 'cors';
+import express from 'express';
+ 
+const app = express();
+ 
+app.use(cors());
+ 
+app.get('/', (req, res) =&gt; {
+  res.send('Hello World!');
+});
+ 
+app.listen(3000, () =&gt;
+  console.log(`Example app listening on port 3000!`),
+);
+The Express application can literally use a middleware, coming from an external library or built by yourself, to extend all its routes (application-level middleware). In this case, all routes are extended with CORS HTTP headers. By default all routes are accessible for all domains now. This includes later our development domains from our consuming client application too. After all, this was only a sneak peak into an Express middleware. We will learn more about application-level and router-level middleware, and how to write a middleware yourself, later.
+
+Note: Don't worry about the CORS configuration if you didn't fully grasp its purpose yet. It's one of the things many first time Express users run into, have to deal with by installing this neat library, and often never look back why they had to install and use it. If you didn't understand it yet, no worries, but at the time you deploy your application to production, you should set up a whitelist of domains which are allowed to access your Express server application. The CORS library offers this kind of configuration. Take some time to look into it yourself.
+
+Environment Variables in Express.js
+Before you have set up environment variables for your Node.js application. Let's use one environment variable to set up your port instead of hardcoding it in the source code. If there isn't such file, create a new .env file in your project. Otherwise use the .env file that's already there. Give it a new key value pair to define your port:
+
+PORT=3000
+Now in your src/index.js file, import the node package which makes the environment variables available in your source code and use the PORT environment variable for starting your Express application:
+
+import 'dotenv/config';
+import cors from 'cors';
+import express from 'express';
+ 
+const app = express();
+ 
+app.use(cors());
+ 
+app.get('/', (req, res) =&gt; {
+  res.send('Hello World!');
+});
+ 
+app.listen(process.env.PORT, () =&gt;
+  console.log(`Example app listening on port ${process.env.PORT}!`),
+);
+Instead of exposing the port that is used in the source code, you have stored it at a more sensitive place in your environment variables. If you are using Git with something like GitHub, you can exclude the .env from being uploaded to the GitHub repository by adding it to your .gitignore file. That's how sensitive data is kept away from public repositories like GitHub. If you deploy your application to production eventually, you can add the environment variables as .env file on your web server which is serving your application then.</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b3">[3]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class=""><input type="button" value="txt" onclick="show_block(event,this);"><input type="button" value="clr" onclick="clr_block(event,this);"><input type="button" value="-" onclick="vis_block(event,this);"><br><textarea id="b3_in" class="box0" rows="1" cols="110" style="height: 51px;">https://www.robinwieruch.de/node-express-server-rest-api part 3 of 3</textarea><div>https://www.robinwieruch.de/node-express-server-rest-api</div></span></div><p style="margin: 0.75em;"></p><div id="b4">[4]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b4_in" class="hidden" rows="1" cols="110" style="height: auto;">is tutorial is part 3 of 3 in this series.
+
+Part 1: The minimal Node.js with Babel Setup
+Part 2: How to setup Express.js in Node.js
+An Express application is most often used as a backend application in a client-server architecture whereas the client could be written in React.js or another popular frontend solution and the server could be written in Express. Both entities result in a client-server architecture (frontend and backend relationship) whereas the backend would be needed for (A) business logic that shouldn't be exposed as source code to the frontend application -- otherwise it would be accessible in the browser -- or for (B) establishing connections to third-party data sources (e.g. database(s)).
+
+However, don't mistake client application always for frontend and server application always for backend here. These terms cannot be exchanged that easily. Whereas a frontend application is usually something seen in the browser, a backend usually performs business logic that shouldn't be exposed in a browser and often connects to a database as well.
+
+Frontend -&gt; Backend -&gt; Database
+But, in contrast, the terms client and server are a matter of perspective. A backend application (Backend 1) which consumes another backend application (Backend 2) becomes a client application (Backend 1) for the server application (Backend 2). However, the same backend application (Backend 1) is still the server for another client application which is the frontend application (Frontend).
+
+Frontend -&gt; Backend 1 -&gt; Backend 2 -&gt; Database
+ 
+// Frontend: Client of Backend 1
+// Backend 1: Server for Frontend, also Client of Backend 2
+// Backend 2: Server for Backend 1
+If you want to answer the client-server question if someone asks you what role an entity plays in a client-server architecture, always ask yourself who (server) is serving whom (client) and who (client) consumes whom's (backend) functionalities?
+
+That's the theory behind client-server architectures and how to relate to them. Let's get more practical again. How do client and server applications communicate with each other? Over the years, there existed a few popular communication interfaces (APIs) between both entities. However, the most popular one is called REST defined in 2000 by Roy Fielding. It's an architecture that leverages the HTTP protocol to enable communication between a client and a server application. A server application that offers a REST API is also called a RESTful server. Servers that don't follow the REST architecture a 100% are rather called RESTish than RESTful. In the following, we are going to implement such REST API for our Express server application, but first let's get to know the tooling that enables us to interact with a REST API.
+
+Exercises:
+What's a client-server architecture?
+Read more about REST APIs and other APIs.
+CURL FOR REST APIS
+If you haven't heard about cURL, this section gives you a short excursus about what's cURL and how to use it to interact with (REST) APIs. The definition taken from Wikipedia says: "cURL [...] is a computer software project providing a library and command-line tool for transferring data using various protocols." Since REST is an architecture that uses HTTP, a server that exposes a RESTful API can be consumed with cURL, because HTTP is one of the various protocols.
+
+First, let's install it one the command line. For now, the installation guide is for MacOS users, but I guess by looking up "curl for windows" online, you will find the setup guide for your desired OS (e.g. Windows) too. In this guide, we will use Homebrew to install it. If you don't have Homebrew, install it with the following command on the command line:
+
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+If you haven't heard about Homebrew, read more about it over here. Next, install cURL with Homebrew:
+
+brew install curl
+Now, start your Express server from the previous sections. Once your application is started, execute curl http://localhost:3000 in another command line window. Make sure the port matches your port and the Express server is running. After executing the command, you should see the "Hello World!" printed on the command line. Congratulations, you just have consumed your Express server as a client with something else than a browser.
+
+Browser (Client) -&gt; Express Server
+cURL (Client) -&gt; Express Server
+Whether you access your Express application on http://localhost:3000 in the browser or via the command line with cURL, you should see the same result. Both tools act as clients whereas the Express application is your server. You will see in the next sections how to use cURL to verify your Express application's REST API, that we are going to implement together, on the command line instead of in the browser.
+
+Exercises:
+Get yourself more familiar with the terms client/server and frontend/backend.
+If you want to have an alternative for cURL which works in the browser, check out Postman or Insomnia.
+EXPRESS ROUTES: HTTP METHODS ARE REST OPERATIONS
+Express is a perfect choice for a server when it comes to creating and exposing APIs (e.g. REST API) to communicate as a client with your server application. Previously you have already implemented one Express route, which sends a "Hello World!", that you have accessed via the browser and cURL. Let's set up more routes to accommodate a RESTful API for your Express application eventually. Add the following routes to your Express application whereas the URI itself doesn't change, but the method used from your Express instance:
+
+import 'dotenv/config';
+...
+import express from 'express';
+ 
+const app = express();
+ 
+...
+ 
+app.get('/', (req, res) =&gt; {
+  return res.send('Received a GET HTTP method');
+});
+ 
+app.post('/', (req, res) =&gt; {
+  return res.send('Received a POST HTTP method');
+});
+ 
+app.put('/', (req, res) =&gt; {
+  return res.send('Received a PUT HTTP method');
+});
+ 
+app.delete('/', (req, res) =&gt; {
+  return res.send('Received a DELETE HTTP method');
+});
+ 
+app.listen(process.env.PORT, () =&gt;
+  console.log(`Example app listening on port ${process.env.PORT}!`),
+);
+Every Express instance's method maps to a HTTP method. Let's see how this works: Start your Express server on the command line again, if it isn't running already, and execute four cURL commands in another command line window. You should see the following output for the commands:
+
+curl http://localhost:3000
+-&gt; Received a GET HTTP method
+ 
+curl -X POST http://localhost:3000
+-&gt; Received a POST HTTP method
+ 
+curl -X PUT http://localhost:3000
+-&gt; Received a PUT HTTP method
+ 
+curl -X DELETE http://localhost:3000
+-&gt; Received a DELETE HTTP method
+By default cURL will use a HTTP GET method. However, you can specify the HTTP method with the -X flag (or --request flag). Depending on the HTTP method you are choosing, you will access different routes of your Express application -- which here represent only a single API endpoint with an URI so far. You will see later other additions that you can add to your cURL requests.
+
+That's one of the key aspects of REST: It uses HTTP methods to perform operations on URI(s). Often these operations are referred to as CRUD operations for create, read, update, and delete operations. Next you will see on what these operations are used on the URIs (resources).
+
+Exercises:
+Confirm your source code for the last section.
+Confirm your changes from the last section.
+Read more about CRUD operations.
+Try some more cURL commands yourself on the command line.
+EXPRESS ROUTES: URIS ARE REST RESOURCES
+Another important aspect of REST is that every URI acts as a resource. So far, you have only operated on the root URI with your CRUD operations, which doesn't really represent a resource in REST. In contrast, a resource could be a user resource, for example. Change your previously introduced routes to the following:
+
+...
+ 
+app.get('/users', (req, res) =&gt; {
+  return res.send('GET HTTP method on user resource');
+});
+ 
+app.post('/users', (req, res) =&gt; {
+  return res.send('POST HTTP method on user resource');
+});
+ 
+app.put('/users', (req, res) =&gt; {
+  return res.send('PUT HTTP method on user resource');
+});
+ 
+app.delete('/users', (req, res) =&gt; {
+  return res.send('DELETE HTTP method on user resource');
+});
+ 
+...
+With cURL on your command line, you can go through the resource -- represented by one URI http://localhost:3000/users -- which offers all the CRUD operations via HTTP methods:
+
+C for Create: HTTP POST
+R for Read: HTTP GET
+U for Update: HTTP PUT
+D for Delete: HTTP DELETE
+You will see a similar output as before, but this time you are operating on a user resource. For example, if you want to create a user, you hit the following URI:
+
+curl -X POST http://localhost:3000/users
+-&gt; POST HTTP method on user resource
+Obviously we don't transfer any information for creating a user yet, however, the API endpoint for creating a user would be available now. One piece is missing to make the PUT HTTP method (update operation) and DELETE HTTP method (delete operation) RESTful from a URI's point of view:
+
+...
+ 
+app.get('/users', (req, res) =&gt; {
+  return res.send('GET HTTP method on user resource');
+});
+ 
+app.post('/users', (req, res) =&gt; {
+  return res.send('POST HTTP method on user resource');
+});
+ 
+app.put('/users/:userId', (req, res) =&gt; {
+  return res.send(
+    `PUT HTTP method on user/${req.params.userId} resource`,
+  );
+});
+ 
+app.delete('/users/:userId', (req, res) =&gt; {
+  return res.send(
+    `DELETE HTTP method on user/${req.params.userId} resource`,
+  );
+});
+ 
+...
+In order to delete or update a user resource, you would need to know the exact user. That's where unique identifiers are used. In our Express routes, we can assign unique identifiers with parameters in the URI. Then the callback function holds the URI's parameter in the request object's properties. Try again a cURL operation on /users/1, /users/2 or another identifier with a DELETE or UPDATE HTTP method and verify that the identifier shows up in the command line as output.
+
+Exercises:
+Confirm your source code for the last section.
+Confirm your changes from the last section.
+Try to delete or update a user by identifier with cURL.
+Read more about basic routing in Express.
+MAKING SENSE OF REST WITH EXPRESS
+You may be still wondering: What value brings the combination of URIs and HTTP methods -- which make up the majority of the REST philosophy -- to my application?
+
+Let's imagine we wouldn't just return a result, as we do at the moment, but would act properly on the received operation instead. For instance, the Express server could be connected to a database that stores user entities in a user table. Now, when consuming the REST API as a client (e.g. cURL, browser, or also a React.js application), you could retrieve all users from the database with a HTTP GET method on the /users URI or, on the same resource, create a new user with a HTTP POST method.
+
+// making sense of the naming
+ 
+Express Route's Method &lt;=&gt; HTTP Method &lt;=&gt; REST Operation
+Express Route's Path &lt;=&gt; URI &lt;=&gt; REST Resource
+Suddenly you would be able to read and write data from and to a database from a client application. Everything that makes it possible is a backend application which enables you to write a interface (e.g. REST API) for CRUD operations:
+
+Client -&gt; REST API -&gt; Server -&gt; Database
+Whereas it's important to notice that the REST API belongs to the server application:
+
+Client -&gt; (REST API -&gt; Server) -&gt; Database
+You can take this always one step further by having multiple server applications offering REST APIs. Often they come with the name microservices or web services whereas each server application offers a well-encapsulated functionality. The servers even don't have to use the same programming language, because they are communicating over a programming language agnostic interface (HTTP with REST). Although the interfaces (APIs) don't have to be necessary REST APIs.
+
+       -&gt; (GraphQL API -&gt; Server) -&gt; Database
+Client
+       -&gt; (REST API -&gt; Server) -&gt; Database
+Let's take everything we learned in theory, so far, one step further towards a real application by sending real data across the wire. The data will be sample data, which will not come from a database yet, but will be hardcoded in the source code instead:
+
+...
+ 
+let users = {
+  1: {
+    id: '1',
+    username: 'Robin Wieruch',
+  },
+  2: {
+    id: '2',
+    username: 'Dave Davids',
+  },
+};
+ 
+let messages = {
+  1: {
+    id: '1',
+    text: 'Hello World',
+    userId: '1',
+  },
+  2: {
+    id: '2',
+    text: 'By World',
+    userId: '2',
+  },
+};
+ 
+...
+Next to the user entities, we will have message entities too. Both entities are related to each other by providing the necessary information as identifiers (e.g. a message has a message creator). That's how a message is associated with a user and how you would retrieve the data from a database, too, whereas each entity (user, message) has a dedicated database table. Both are represented as objects that can be accessed by identifiers.
+
+Let's start by providing two routes for reading the whole list of users and a single user by identifier:
+
+...
+ 
+let users = { ... };
+ 
+let messages = { ... };
+ 
+app.get('/users', (req, res) =&gt; {
+  return res.send(Object.values(users));
+});
+ 
+app.get('/users/:userId', (req, res) =&gt; {
+  return res.send(users[req.params.userId]);
+});
+ 
+app.listen(process.env.PORT, () =&gt;
+  console.log(`Example app listening on port ${process.env.PORT}!`),
+);
+Whereas we pick a user from the object by identifier for the single users route, we transform the user object to a list of users for the all users route. The same should be possible for the message resource:
+
+...
+ 
+let users = { ... };
+ 
+let messages = { ... };
+ 
+...
+ 
+app.get('/messages', (req, res) =&gt; {
+  return res.send(Object.values(messages));
+});
+ 
+app.get('/messages/:messageId', (req, res) =&gt; {
+  return res.send(messages[req.params.messageId]);
+});
+ 
+app.listen(process.env.PORT, () =&gt;
+  console.log(`Example app listening on port ${process.env.PORT}!`),
+);
+Try all four routes with cURL on the command line yourself. That's only about reading data. Next, we will discuss the other CRUD operations to create, update and delete resources to actually write data. However, we will not get around a custom Express middleware and a Express middleware provided by the Express ecosystem. That's why we will discuss the subject of the Express middleware next while implementing the missing CRUD operations.
+
+Exercises:
+Confirm your source code for the last section.
+Confirm your changes from the last section.
+Read more about REST.
+Read more about GraphQL as popular alternative to REST.
+APPLICATION-LEVEL EXPRESS MIDDLEWARE
+Before we jump into Express middleware again, let's see how a scenario for creating a message could be implemented in our Express application. Since we are creating a message without a database ourselves, we need a helper library to generate unique identifiers for us. Install this helper library on the command line:
+
+npm install uuid
+Next import it at the top of your src/index.js file:
+
+import { v4 as uuidv4 } from 'uuid';
+Now, create a message with a new route that uses a HTTP POST method:
+
+...
+ 
+app.post('/messages', (req, res) =&gt; {
+  const id = uuidv4();
+  const message = {
+    id,
+  };
+ 
+  messages[id] = message;
+ 
+  return res.send(message);
+});
+ 
+...
+We generate a unique identifier for the message with the new library, use it as property in a message object with a shorthand object property initialization, assign the message by identifier in the messages object -- which is our pseudo database --, and return the new message after it has been created.
+
+However, something is missing for the message. In order to create a message, a client has to provide the text string for the message. Fortunately a HTTP POST method makes it possible to send data as payload in a body. That's why we can use the incoming request (req) to extract a payload from it:
+
+...
+ 
+app.post('/messages', (req, res) =&gt; {
+  const id = uuidv4();
+  const message = {
+    id,
+    text: req.body.text,
+  };
+ 
+  messages[id] = message;
+ 
+  return res.send(message);
+});
+ 
+...
+Accessing the payload of an HTTP POST request is provided within Express with its built-in middleware which is based on body-parser. It enables us to transform body types from our request object (e.g. json, urlencoded):
+
+...
+import express from 'express';
+ 
+const app = express();
+ 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+ 
+...
+This extracts the entire body portion of an incoming request stream and makes it accessible on req.body. Now the body with the message's text is accessible in the request whether it is send by a regular POST request or a POST request from a HTML form. Both options should work, because all data should be received and send as JSON payload now. That's another aspect of REST, which itself is no opinionated about the payload format (JSON, XML), but once you have chosen a format (here JSON), you should stick to it for your entire API.
+
+Note that all data that comes with the request object's body tag isn't typed yet. Everything comes as a JSON string. In the case of the message's text, we are doing fine with just keeping it as a string. However, for other types you would have to convert the JSON string:
+
+const date = Date.parse(req.body.date);
+const count = Number(req.body.count);
+In this last step, we have used a built-in Express middleware and made it available on an application-level -- which means that each request that arrives at one of our Express routes goes through the middleware. Therefore, all data send by a client to our server is available in the incoming request's body. Try it by creating a message yourself: In a cURL request you can specify HTTP headers with the -H flag -- that's how we are saying we want to transfer JSON -- and data as payload with the -d flag. You should be able to create messages this way:
+
+curl -X POST -H "Content-Type:application/json" http://localhost:3000/messages -d '{"text":"Hi again, World"}'
+You should see the created messaged returned to you on the command line. You can double check whether the message was really created in your messages object (aka pseudo database) by performing another cURL requests on the command line:
+
+curl http://localhost:3000/messages
+There you should see the new message which has been created for you. In addition, you should also be able to request your new message by identifier. Perform the following cURL request to get a single message entity, but use your actual message identifier for it, because my identifier is different from yours:
+
+curl http://localhost:3000/messages/849d9407-d7c6-4712-8c91-1a99f7b22ef5
+That's it. You have created your first resource (message) via your REST API and requested the same resource (message(s)) from your REST API. On top of that, you have used a built-in Express middleware to make the data available in the request's body object.
+
+So far, we have only imported third-party Express middleware (CORS) or used a built-in Express middleware (body parser) -- both on an application-level. Now, let's build a custom Express middleware ourselves, which will be used on an application-level too. The blueprint for a middleware is similar to the Express functions we have seen before:
+
+...
+ 
+app.use((req, res, next) =&gt; {
+  // do something
+  next();
+});
+ 
+...
+A middleware is just a JavaScript function which has access to three arguments: req, res, next. You already know req and res -- they are our request and response objects. In addition, the next function should be called to signalize that the middleware has finished its job. In between of the middleware function you can do anything now. We could simply console.log() the time or do something with the request (req) or response (res) objects.
+
+In our particular case, when creating a message on the message resource, we need to know who is creating the message to assign a userId to it. Let's do a simple version of a middleware that determines a pseudo authenticated user that is sending the request. In the following case, the authenticated user is the user with the identifier 1 which gets assigned as me property to the request object:
+
+app.use((req, res, next) =&gt; {
+  req.me = users[1];
+  next();
+});
+Afterward, you can get the authenticated user from the request object and append it as message creator to the message:
+
+app.post('/messages', (req, res) =&gt; {
+  const id = uuidv4();
+  const message = {
+    id,
+    text: req.body.text,
+    userId: req.me.id,
+  };
+ 
+  messages[id] = message;
+ 
+  return res.send(message);
+});
+You can imagine how such middleware could be used later to intercept each incoming request to determine from the incoming HTTP headers whether the request comes from an authenticated user or not. If the request comes from an authenticated user, the user is propagated to every Express route to be used there. That's how the Express server can be stateless while a client always sends over the information of the currently authenticated user.
+
+Being a stateless is another characteristic of RESTful services. After all, it should be possible to create multiple server instances to balance the incoming traffic evenly between the servers. If you heard about the term load balancing before, that's exactly what's used when having multiple servers at your hands. That's why a server shouldn't keep the state (e.g. authenticated user) -- except for in a database -- and the client always has to send this information along with each request. Then a server can have a middleware which takes care of the authentication on an application-level and provides the session state (e.g. authenticated user) to every route in your Express application.
+
+Now, that you have learned the essentials about application-level middleware in Express, let's implement the last routes to complete our application's routes. What about the operation to delete a message:
+
+...
+ 
+app.delete('/messages/:messageId', (req, res) =&gt; {
+  const {
+    [req.params.messageId]: message,
+    ...otherMessages
+  } = messages;
+ 
+  messages = otherMessages;
+ 
+  return res.send(message);
+});
+ 
+...
+Here we used a dynamic object property to exclude the message we want to delete from the rest of the messages object. You can try to verify the functionality with the following cURL command:
+
+curl -X DELETE http://localhost:3000/messages/1
+The update operation on a message resource is for you to implement yourself as an exercise. I will spare it for a later section, because it quickly raises a new topic: permissions. The question: Who is allowed to edit a message? It should only be possible for the authenticated user (me) who is the creator of the message.
+
+Last, since you have already the pseudo authenticated user at your hands due to the application-wide middleware, you can offer a dedicated route for this resource too:
+
+...
+ 
+app.get('/session', (req, res) =&gt; {
+  return res.send(users[req.me.id]);
+});
+ 
+...
+It's the first time you break the rules of being entirely RESTful, because you offer an API endpoint for a very specific feature. It will not be the first time you break the laws of REST, because most often REST is not fully implemented RESTful but rather RESTish. If you want to dive deeper into REST, you can do it by yourself. HATEOAS and other REST related topics are not covered in detail and implemented here.
+
+Exercises:
+Confirm your source code for the last section.
+Confirm your changes from the last section.
+Read more about using middleware in Express.
+Focus on the application-level middleware, the built-in middleware, and the third-party middleware.
+Read more about writing middleware in Express.
+MODULAR MODELS IN EXPRESS AS DATA SOURCES
+At the moment, all of our implementation sits in the src/index.js file. However, at some point you may want to modularize your implementation details and put them into dedicated files and folders whereas the src/index.js file should only care about putting everything together and starting the application. Before we dive into modularizing the routing, let's see how we can modularize our sample data in so called models first. From your root folder type the following commands to create a folder/file structure for the models.
+
+cd src
+mkdir models
+cd models
+touch index.js
+The models folder in an Express application is usually the place where you define your data sources. In our case, it's the sample data, but in other applications, for instance, it would be the interfaces to the database. In our case of refactoring this, let's move our sample data over to the new src/models/index.js file:
+
+let users = {
+  1: {
+    id: '1',
+    username: 'Robin Wieruch',
+  },
+  2: {
+    id: '2',
+    username: 'Dave Davids',
+  },
+};
+ 
+let messages = {
+  1: {
+    id: '1',
+    text: 'Hello World',
+    userId: '1',
+  },
+  2: {
+    id: '2',
+    text: 'By World',
+    userId: '2',
+  },
+};
+ 
+export default {
+  users,
+  messages,
+};
+Remove the sample data afterward in the src/index.js file. Also import the models in the src/index.js file now and pass them in our custom application-level middleware to all routes via a dedicated context object. That's where the me user (authenticated) user can be placed as well. You don't need necessarily the context object as container, but I found it a good practice to keep everything that is passed to the routes at one place.
+
+...
+ 
+import models from './models';
+ 
+const app = express();
+ 
+...
+ 
+app.use((req, res, next) =&gt; {
+  req.context = {
+    models,
+    me: models.users[1],
+  };
+  next();
+});
+ 
+...
+Then, instead of having access to the sample data in all routes from outside variables as before -- which is an unnecessary side-effect and doesn't keep the function pure --, we want to use the models (and authenticated user) from the function's arguments now:
+
+...
+ 
+app.get('/session', (req, res) =&gt; {
+  return res.send(req.context.models.users[req.context.me.id]);
+});
+ 
+app.get('/users', (req, res) =&gt; {
+  return res.send(Object.values(req.context.models.users));
+});
+ 
+app.get('/users/:userId', (req, res) =&gt; {
+  return res.send(req.context.models.users[req.params.userId]);
+});
+ 
+app.get('/messages', (req, res) =&gt; {
+  return res.send(Object.values(req.context.models.messages));
+});
+ 
+app.get('/messages/:messageId', (req, res) =&gt; {
+  return res.send(req.context.models.messages[req.params.messageId]);
+});
+ 
+app.post('/messages', (req, res) =&gt; {
+  const id = uuidv4();
+  const message = {
+    id,
+    text: req.body.text,
+    userId: req.context.me.id,
+  };
+ 
+  req.context.models.messages[id] = message;
+ 
+  return res.send(message);
+});
+ 
+app.delete('/messages/:messageId', (req, res) =&gt; {
+  const {
+    [req.params.messageId]: message,
+    ...otherMessages
+  } = req.context.models.messages;
+ 
+  req.context.models.messages = otherMessages;
+ 
+  return res.send(message);
+});
+ 
+...
+We are using the application-wide middleware to pass the models to all our routes in a context object now. The models are living outside of the src/index.js file and can be refactored to actual database interfaces later. Next, since we made the routing independent from all side-effects and pass everything needed to them via the request object with the context object, we can move the routes to separated places too.
+
+Exercises:
+Confirm your source code for the last section.
+Confirm your changes from the last section.
+MODULAR ROUTING WITH EXPRESS ROUTER
+So far, you have mounted routes directly on the Express application instance in the src/index.js file. This will become verbose eventually, because this file should only care about all the important topics to start our application. It shouldn't reveal implementation details of the routes. Now the best practice would be to move the routes into their dedicated folder/file structure. That's why we want to give each REST resource their own file in a dedicated folder. From your root folder, type the following on the command line to create a folder/file structure for the modular routes:
+
+cd src
+mkdir routes
+cd routes
+touch index.js session.js user.js message.js
+Then, assumed the routes would be already defined, import the all the modular routes in the src/index.js file and use them to mount them as modular routes. Each modular route receives a URI which in REST is our resource:
+
+...
+ 
+import routes from './routes';
+ 
+const app = express();
+ 
+...
+ 
+app.use('/session', routes.session);
+app.use('/users', routes.user);
+app.use('/messages', routes.message);
+ 
+...
+In our src/routes/index.js entry file to the routes module, import all routes form their dedicated files (that are not defined yet) and export them as an object. Afterward, they are available in the src/index.js file as we have already used them.
+
+import session from './session';
+import user from './user';
+import message from './message';
+ 
+export default {
+  session,
+  user,
+  message,
+};
+Now let's implement each modular route. Start with the session route in the src/routes/session.js file which only returns the pseudo authenticated user. Express offers the Express Router to create such modular routes without mounting them directly to the Express application instance. That's how we can create modular routes at other places than the Express application, but import them later to be mounted on the Express application's instance as we already have done in a previous step.
+
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', (req, res) =&gt; {
+  return res.send(req.context.models.users[req.context.me.id]);
+});
+ 
+export default router;
+Next, the user route in the src/routes/user.js file. It's quite similar to the session route:
+
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', (req, res) =&gt; {
+  return res.send(Object.values(req.context.models.users));
+});
+ 
+router.get('/:userId', (req, res) =&gt; {
+  return res.send(req.context.models.users[req.params.userId]);
+});
+ 
+export default router;
+Notice how we don't need to define the /users URI (path) but only the subpaths, because we did this already in the mounting process of the route in the Express application (see src/index.js file). Next, implement the src/routes/message.js file to define the last of our modular routes:
+
+import { v4 as uuidv4 } from 'uuid';
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', (req, res) =&gt; {
+  return res.send(Object.values(req.context.models.messages));
+});
+ 
+router.get('/:messageId', (req, res) =&gt; {
+  return res.send(req.context.models.messages[req.params.messageId]);
+});
+ 
+router.post('/', (req, res) =&gt; {
+  const id = uuidv4();
+  const message = {
+    id,
+    text: req.body.text,
+    userId: req.context.me.id,
+  };
+ 
+  req.context.models.messages[id] = message;
+ 
+  return res.send(message);
+});
+ 
+router.delete('/:messageId', (req, res) =&gt; {
+  const {
+    [req.params.messageId]: message,
+    ...otherMessages
+  } = req.context.models.messages;
+ 
+  req.context.models.messages = otherMessages;
+ 
+  return res.send(message);
+});
+ 
+export default router;
+Every of our modular routes from Express Router is mounted to our Express application with a dedicated URI in the src/index.js file now. The modular routes in the src/routes folder only take care of their sub paths and their implementation details while the mounting in the src/index.js file takes care of the main path and the mounted modular route that is used there. In the end, don't forget to remove all the previously used routes that we moved over to the src/routes/ folder in the src/index.js file.</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b5">[5]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class=""><input type="button" value="txt" onclick="show_block(event,this);"><input type="button" value="clr" onclick="clr_block(event,this);"><input type="button" value="-" onclick="vis_block(event,this);"><br><textarea id="b5_in" class="box0" rows="1" cols="110" style="height: 51px;">https://www.robinwieruch.de/mongodb-express-setup-tutorial/ part 4 of 5</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b6">[6]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b6_in" class="hidden" rows="1" cols="110" style="height: auto;">his tutorial is part 4 of 4 in this series.
+
+Part 1: The minimal Node.js with Babel Setup
+Part 2: How to setup Express.js in Node.js
+Part 3: How to create a REST API with Express.js in Node.js
+Eventually every Node.js project running with Express.js as web application will need a database. Since most server applications are stateless, in order to scale them horizontally with multiple server instances, there is no way to persist data without another third-party (e.g. database). That's why it is fine to develop an initial application with sample data, where it is possible to read and write data without a database, but at some point you want to introduce a database to manage the data. The database would keep the data persistence across servers or even though one of your servers is not running.
+
+The following sections will show you how to connect your Express application to a MongoDB database with Mongoose as ORM. If you haven't installed MongoDB on your machine yet, head over to this guide on how to install MongoDB for your machine. It comes with a MacOS and a Windows setup guide. Afterward come back to the next section of this guide to learn more about using MongoDB in Express.
+
+MONGODB WITH MONGOOSE IN EXPRESS INSTALLATION
+To connect MongoDB to your Express application, we will use an ORM to convert information from the database to a JavaScript application without SQL statements. ORM is short for Object Related Mapping, a technique that programmers use to convert data among incompatible types. More specifically, ORMs mimic the actual database so a developer can operate within a programming language (e.g. JavaScript) without using a database query language (e.g. SQL) to interact with the database. The downside is the extra code abstraction, that's why there are developers who advocate against an ORM, but this shouldn't be a problem for many JavaScript applications without complex database queries.
+
+For this application, we'll use Mongoose as ORM. Mongoose provides a comfortable API to work with MongoDB databases from setup to execution. Before you can implement database usage in your Node.js application, install mongoose on the command line for your Node.js application:
+
+npm install mongoose --save
+After you have installed the library as node packages, we'll plan and implement our database entities with models and schemas.
+
+DATABASE MODELS, SCHEMAS AND ENTITIES
+The following case implements a database for your application with two database entities: User and Message. Often a database entity is called database schema or database model as well. You can distinguish them the following way:
+
+Database Schema: A database schema is close to the implementation details and tells the database (and developer) how an entity (e.g. user entity) looks like in a database table whereas every instance of an entity is represented by a table row. For instance, the schema defines fields (e.g. username) and relationships (e.g. a user has messages) of an entity. Each field is represented as a column in the database. Basically a schema is the blueprint for an entity.
+
+Database Model: A database model is a more abstract perspective on the schema. It offers the developer a conceptual framework on what models are available and how to use models as interfaces to connect an application to a database to interact with the entities. Often models are implemented with ORMs.
+
+Database Entity: A database entity is actual instance of a stored item in the database that is created with a database schema. Each database entity uses a row in the database table whereas each field of the entity is defined by a column. A relationship to another entity is often described with an identifier of the other entity and ends up as field in the database as well.
+
+Before diving into the code for your application, it's always a good idea to map the relationships between entities and how to handle the data that must pass between them. A UML (Unified Modeling Language) diagram is a straightforward way to express relationships between entities in a way that can be referenced quickly as you type them out. This is useful for the person laying the groundwork for an application as well as anyone who wants to additional information in the database schema to it. An UML diagram could appear as such:
+
+uml diagram
+
+The User and Message entities have fields that define both their identity within the construct and their relationships to each other. Let's get back to our Express application. Usually, there is a folder in your Node.js application called src/models/ that contains files for each model in your database (e.g. src/models/user.js and src/models/message.js). Each model is implemented as a schema that defines the fields and relationships. There is often also a file (e.g. src/models/index.js) that combines all models and exports all them as database interface to the Express application. We can start with the two models in the src/models/[modelname].js files, which could be expressed like the following without covering all the fields from the UML diagram for the sake of keeping it simple. First, the user model in the src/models/user.js file:
+
+import mongoose from 'mongoose';
+ 
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
+ 
+const User = mongoose.model('User', userSchema);
+ 
+export default User;
+As you can see, the user has a username field which is represented as string type. In addition, we added some more validation for our user entity. First, we don't want to have duplicated usernames in our database, hence we add the unique attribute to the field. And second, we want to make the username string required, so that there is no user without a username. Last but not least, we defined timestamps for this database entity, which will result in additional createdAt and updatedAt fields.
+
+We can also implement additional methods on our model. Let's assume our user entity ends up with an email field in the future. Then we could add a method that finds a user by their an abstract "login" term, which is the username or email in the end, in the database. That's helpful when users are able to login to your application via username or email adress. You can implement it as method for your model. After, this method would be available next to all the other build-in methods that come from your chosen ORM:
+
+import mongoose from 'mongoose';
+ 
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
+ 
+userSchema.statics.findByLogin = async function (login) {
+  let user = await this.findOne({
+    username: login,
+  });
+ 
+  if (!user) {
+    user = await this.findOne({ email: login });
+  }
+ 
+  return user;
+};
+ 
+const User = mongoose.model('User', userSchema);
+ 
+export default User;
+The message model looks quite similar, even though we don't add any custom methods to it and the fields are pretty straightforward with only a text field:
+
+import mongoose from 'mongoose';
+ 
+const messageSchema = new mongoose.Schema(
+  {
+    text: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
+ 
+const Message = mongoose.model('Message', messageSchema);
+ 
+export default Message;
+However, we may want to associate the message with a user:
+
+import mongoose from 'mongoose';
+ 
+const messageSchema = new mongoose.Schema(
+  {
+    text: {
+      type: String,
+      required: true,
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  },
+  { timestamps: true },
+);
+ 
+const Message = mongoose.model('Message', messageSchema);
+ 
+export default Message;
+Now, in case a user is deleted, we may want to perform a so called cascade delete for all messages in relation to the user. That's why you can extend schemas with hooks. In this case, we add a pre hook to our user schema to remove all messages of this user on its deletion:
+
+import mongoose from 'mongoose';
+ 
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
+ 
+userSchema.statics.findByLogin = async function (login) {
+  let user = await this.findOne({
+    username: login,
+  });
+ 
+  if (!user) {
+    user = await this.findOne({ email: login });
+  }
+ 
+  return user;
+};
+ 
+userSchema.pre('remove', function(next) {
+  this.model('Message').deleteMany({ user: this._id }, next);
+});
+ 
+const User = mongoose.model('User', userSchema);
+ 
+export default User;
+Mongoose is used to define the model with its content (composed of types and optional configuration). Furthermore, additional methods can be added to shape the database interface and references can be used to create relations between models. An user can have multiple messages, but a Message belongs to only one user. You can dive deeper into these concepts in the Mongoose documentation. Next, in your src/models/index.js file, import and combine those models and export them as unified models interface:
+
+import mongoose from 'mongoose';
+ 
+import User from './user';
+import Message from './message';
+ 
+const connectDb = () =&gt; {
+  return mongoose.connect(process.env.DATABASE_URL);
+};
+ 
+const models = { User, Message };
+ 
+export { connectDb };
+ 
+export default models;
+At the top of the file, you create a connection function by passing the database URL as mandatory argument to it. In our case, we are using environment variables, but you can pass the argument as string in the source code too. For example, the environment variable could look like the following in an .env file:
+
+DATABASE_URL=mongodb://localhost:27017/node-express-mongodb-server
+Note: The database URL can seen when you start up your MongoDB on the command line. You only need to define a subpath for the URL to define a specific database. If the database doesn't exist yet, MongoDB will create one for you.
+
+Lastly, use the function in your Express application. It connects to the database asynchronously and once this is done you can start your Express application.
+
+import express from 'express';
+...
+ 
+import models, { connectDb } from './models';
+ 
+const app = express();
+ 
+...
+ 
+connectDb().then(async () =&gt; {
+  app.listen(process.env.PORT, () =&gt;
+    console.log(`Example app listening on port ${process.env.PORT}!`),
+  );
+});
+If you want to re-initialize your database on every Express server start, you can add a condition to your function:
+
+...
+ 
+const eraseDatabaseOnSync = true;
+ 
+connectDb().then(async () =&gt; {
+  if (eraseDatabaseOnSync) {
+    await Promise.all([
+      models.User.deleteMany({}),
+      models.Message.deleteMany({}),
+    ]);
+  }
+ 
+  app.listen(process.env.PORT, () =&gt;
+    console.log(`Example app listening on port ${process.env.PORT}!`),
+  );
+});
+That's it for defining your database models for your Express application and for connecting everything to the database once you start your application. Once you start your application again, the command line results will show how the tables in your database were created.
+
+Exercises:
+Confirm your source code for the last section. Be aware that the project cannot run properly in the Sandbox, because there is no database.
+Confirm your changes from the last section.
+Read more about Mongoose.
+HOW TO SEED A MONGODB DATABASE?
+Last but not least, you may want to seed your MongoDB database with initial data to start with. Otherwise, you will always start with a blank slate when purging your database (e.g. eraseDatabaseOnSync) with every application start.
+
+In our case, we have user and message entities in our database. Each message is associated to a user. Now, every time you start your application, your database is connected to your physical database. That's where you decided to purge all your data with a boolean flag in your source code. Also this could be the place for seeding your database with initial data.
+
+...
+ 
+const eraseDatabaseOnSync = true;
+ 
+connectDb().then(async () =&gt; {
+  if (eraseDatabaseOnSync) {
+    await Promise.all([
+      models.User.deleteMany({}),
+      models.Message.deleteMany({}),
+    ]);
+ 
+    createUsersWithMessages();
+  }
+ 
+  app.listen(process.env.PORT, () =&gt;
+    console.log(`Example app listening on port ${process.env.PORT}!`),
+  );
+});
+ 
+const createUsersWithMessages = async () =&gt; {
+  ...
+};
+The createUsersWithMessages() function will be used to seed our database. The seeding happens asynchronously, because creating data in the database is not a synchronous task. Let's see how we can create our first user in MongoDB with Mongoose:
+
+...
+ 
+const createUsersWithMessages = async () =&gt; {
+  const user1 = new models.User({
+    username: 'rwieruch',
+  });
+ 
+  await user1.save();
+};
+Each of our user entities has only a username as property. But what about the message(s) for this user? We can create them in another function which associates the message to a user by reference (e.g. user identifier):
+
+...
+ 
+const createUsersWithMessages = async () =&gt; {
+  const user1 = new models.User({
+    username: 'rwieruch',
+  });
+ 
+  const message1 = new models.Message({
+    text: 'Published the Road to learn React',
+    user: user1.id,
+  });
+ 
+  await message1.save();
+ 
+  await user1.save();
+};
+We can create each entity on its own but associate them with the neccassary information to each other. Then we can save all entities to the actual database. Let's create a second user, but this time with two messages:
+
+...
+ 
+const createUsersWithMessages = async () =&gt; {
+  const user1 = new models.User({
+    username: 'rwieruch',
+  });
+ 
+  const user2 = new models.User({
+    username: 'ddavids',
+  });
+ 
+  const message1 = new models.Message({
+    text: 'Published the Road to learn React',
+    user: user1.id,
+  });
+ 
+  const message2 = new models.Message({
+    text: 'Happy to release ...',
+    user: user2.id,
+  });
+ 
+  const message3 = new models.Message({
+    text: 'Published a complete ...',
+    user: user2.id,
+  });
+ 
+  await message1.save();
+  await message2.save();
+  await message3.save();
+ 
+  await user1.save();
+  await user2.save();
+};
+That's it. In our case, we have used our models to create users with associated messages. It happens when the application starts and we want to start with a clean slate; it's called database seeding. However, the API of our models is used the same way later in our application to create users and messages. In the end, we have set up MongoDB in a Node.js with Express application. What's missing is connecting the database to Express for enabling users to operate on the database with the API rather than operating on sample data.
+
+Exercises:
+Confirm your source code for the last section. Be aware that the project cannot run properly in the Sandbox, because there is no database.
+Confirm your changes from the last section.
+Explore:
+What else could be used instead of Mongoose as ORM alternative?
+What else could be used instead of MongoDB as database alternative?
+Compare your source code with the source code from the PostgreSQL + Sequelize alternative.
+Ask yourself:
+When would you seed an application in a production ready environment?
+Are ORMs like Mongoose essential to connect your application to a database?
+This tutorial is part 4 of 5 in this series.
+
+Part 1: The minimal Node.js with Babel Setup
+Part 2: How to setup Express.js in Node.js
+Part 3: How to create a REST API with Express.js in Node.js
+Part 5: Creating a REST API with Express.js and MongoDB</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b7">[7]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class=""><input type="button" value="txt" onclick="show_block(event,this);"><input type="button" value="clr" onclick="clr_block(event,this);"><input type="button" value="-" onclick="vis_block(event,this);"><br><textarea id="b7_in" class="box0" rows="1" cols="110" style="height: 51px;">https://www.robinwieruch.de/mongodb-express-node-rest-api/ part 5 of 5</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b8">[8]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b8_in" class="hidden" rows="1" cols="110" style="height: auto;">This tutorial is part 5 of 5 in this series.
+
+Part 1: The minimal Node.js with Babel Setup
+Part 2: How to setup Express.js in Node.js
+Part 3: How to create a REST API with Express.js in Node.js
+Part 4: Setup MongoDB with Mongoose in Express
+Node + Express + MongoDB is a powerful tech stack for backend applications to offer CRUD operations. It gives you everything to expose an API (Express routes), to add business logic (Express middleware and logic within Express routes), and to use real data with a database (MongoDB). It's perfect for establishing a MERN (MongoDB, Express, React, Node), MEAN (MongoDB, Express, Angular, Node), or MEVN (MongoDB, Express, Vue, Node) tech stack. Everything that would be missing is the frontend application with React, Angular, Vue or something else. But that's up to another section.
+
+This section focuses first on connecting MongoDB to Express for our REST API. Previously we have set up MongoDB in our Express.js application and seeded the database with initial data, but didn't use it in Express for the RESTful API yet. Now we want to make sure that every CRUD operation going through this REST API reads or writes from/to the MongoDB database rather than using sample data as we did before for our Express routes. That's why we need to wire our Express routes to MongoDB via Mongoose to marry both worlds.
+
+In our src/index.js where we set up and start the Express application with the MongoDB database, we already have a Express middleware in place which passes the models as context to all of our Express routes. Previously, these models have been sample data. Now we are using the Mongoose models that connect us to the MongoDB database. Since the folder/file data structure is the same as before, nothing changes for passing the models as context to the Express routes.
+
+...
+ 
+import models from './models';
+ 
+const app = express();
+ 
+...
+ 
+app.use((req, res, next) =&gt; {
+  req.context = {
+    models,
+    me: models.users[1],
+  };
+  next();
+});
+ 
+...
+However, the me user (authenticated user) can be retrieved from the seeded data from the database. There is no users array available anymore as sample data on the models object, because the models are our interface to the MongoDB database now.
+
+...
+ 
+import models from './models';
+ 
+const app = express();
+ 
+...
+ 
+app.use(async (req, res, next) =&gt; {
+  req.context = {
+    models,
+    me: await models.User.findByLogin('rwieruch'),
+  };
+  next();
+});
+ 
+...
+Even though we don't know the authenticated user yet, because we are not passing any data to the REST API for it from the outside, we just take any user that we know exists in our database because of the previous MongoDB database seeding. The findByLogin method is available on our model, because we have implemented it previously as custom method for it to retrieve users by username or email.
+
+Let's dive into our Express routes now. We have routes for the session, the user, and the message entity. The session entity comes first. Again, instead of using the sample data which was available previously on the models, we can use the models' interface -- powered by Mongoose -- to interact with the database now. In the src/routes/session.js change the following lines of code:
+
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', async (req, res) =&gt; {
+  const user = await req.context.models.User.findById(
+    req.context.me.id,
+  );
+  return res.send(user);
+});
+ 
+export default router;
+The route function becomes an asynchronous function, because we are dealing with an asynchronous request to the MongoDB database now. We handle the asynchronous nature of the function with async/await.
+
+Since we passed the models conveniently via the context object to every Express route with an application-wide Express middleware before, we can make use of it here. The authenticated user, which we have taken arbitrarily from the MongoDB database before, can be used to retrieve the current session user from the database.
+
+Let's tackle the user routes in the src/routes/user.js file which offer RESTful API endpoints for fetching users or a single user by id. Both API requests should lead into read operations for the MongoDB database:
+
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', async (req, res) =&gt; {
+  const users = await req.context.models.User.find();
+  return res.send(users);
+});
+ 
+router.get('/:userId', async (req, res) =&gt; {
+  const user = await req.context.models.User.findById(
+    req.params.userId,
+  );
+  return res.send(user);
+});
+ 
+export default router;
+The first API endpoint that fetches a list of users doesn't get any input parameters from the request. But the second API endpoint has access to the user identifier to read the correct user from the MongoDB database.
+
+Last but not least, the message routes in the src/routes/message.js file. Apart from reading messages and a single message by identifier, we also have API endpoints for creating a message and deleting a message. Both operations should lead to write operations for the MongoDB database:
+
+import { Router } from 'express';
+ 
+const router = Router();
+ 
+router.get('/', async (req, res) =&gt; {
+  const messages = await req.context.models.Message.find();
+  return res.send(messages);
+});
+ 
+router.get('/:messageId', async (req, res) =&gt; {
+  const message = await req.context.models.Message.findById(
+    req.params.messageId,
+  );
+  return res.send(message);
+});
+ 
+router.post('/', async (req, res) =&gt; {
+  const message = await req.context.models.Message.create({
+    text: req.body.text,
+    user: req.context.me.id,
+  });
+ 
+  return res.send(message);
+});
+ 
+router.delete('/:messageId', async (req, res) =&gt; {
+  const message = await req.context.models.Message.findById(
+    req.params.messageId,
+  );
+ 
+  if (message) {
+    await message.remove();
+  }
+ 
+  return res.send(message);
+});
+ 
+export default router;
+There are shorter ways to accomplish the remove of a message in the database with Mongoose. However, by going this way, you make sure to trigger the database hooks which can be set up in the models. You have set up one of these hooks, a remove hook, in the src/models/user.js file previously:
+
+...
+ 
+userSchema.pre('remove', function(next) {
+  this.model('Message').deleteMany({ user: this._id }, next);
+});
+ 
+...
+Every time a user is deleted, this hook makes sure that all messages that belong to this user are deleted as well. That's how you don't have to deal to clean up the database properly on every delete operation of an entity.
+
+Basically that's it for connecting MongoDB to Express routes with Mongoose. All the models set up with Mongoose can be used as interface to your MongoDB database. Once a user hits your REST API, you can do read or write operations in the Express routes to your MongoDB database.
+
+Exercises
+Confirm your source code for the last section. Be aware that the project cannot run properly in the Sandbox, because there is no database.
+Confirm your changes from the last section.
+Check the source code of the alternative PostgreSQL with Sequelize implementation.
+Experiment with your REST API with cURL operations.
+This tutorial is part 1 of 2 in this series.
+
+Part 2: How to handle errors in Express</textarea><div></div></span></div><p style="margin: 0.75em;"></p><div id="b9">[9]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class=""><input type="button" value="txt" onclick="show_block(event,this);"><input type="button" value="clr" onclick="clr_block(event,this);"><input type="button" value="-" onclick="vis_block(event,this);"><br><textarea id="b9_in" class="box0" rows="1" cols="110" style="height: 51px;">https://www.robinwieruch.de/node-express-error-handling</textarea><div>https://www.robinwieruch.de/node-express-error-handling</div></span></div><p style="margin: 0.75em;"></p><div id="b10">[10]:&nbsp;<span class="box1"><input type="button" value="go" onclick="button_flash(go_block,event,this);" class="hidden"><input type="button" value="txt" onclick="show_block(event,this);" class="hidden"><input type="button" value="clr" onclick="clr_block(event,this);" class="hidden"><input type="button" value="+" onclick="vis_block(event,this);"><br><textarea id="b10_in" class="hidden" rows="1" cols="110" style="height: auto;">logo
+ABOUT
+HIRE
+BLOG
+COURSES
+RSS
+How to handle errors in Express
+JUNE 15, 2020
+ BY ROBIN WIERUCH
+ - EDIT THIS POST
+Follow on Twitter
+ Follow on Facebook
+node express error handling, express error handling
+This tutorial is part 2 of 2 in this series.
+
+Part 1: Creating a REST API with Express.js and MongoDB
+This tutorial is part 2 of 2 in this series.
+
+Part 1: Creating a REST API with Express.js and PostgreSQL
+Handling errors in Express is often an afterthought. However, it should usually start with your Express routes, because if an error happens, your user needs to be notified about it. With the right techniques at hand, error handling in Express becomes pretty straight forward.
+
+There are several scenarios why an error might happen. It can be that a user doesn't provide all information for a RESTful request, that your ORM/ODM layer (e.g. Mongoose) cannot perform the desired operation (due to validation or some other restrictions) on the database, or that a user is not authorized to perform a certain operation on a RESTful resource.
+
+In this section, we will go through a database validation case which we created earlier when we designed our database models, where a user isn't allowed to create a message entity with an empty text. First, try the to execute the following cURL operation on the command line:
+
+curl -X POST -H "Content-Type:application/json" http://localhost:3000/messages -d '{"text":"Hi again, World"}'
+In this case, everything works without any error, because a text is provided. However, if you leave the text empty, you will get a different result:
+
+curl -X POST -H "Content-Type:application/json" http://localhost:3000/messages -d '{"text":""}'
+The command line may even get stuck, because no response is delivered from the REST API. There may be a message like: "Empty reply from server". In the loggings of your server, you may see something like "UnhandledPromiseRejectionWarning: Unhandled promise rejection.". If we double check the src/models/message.js file, we see that it's not allowed to create a message with an empty text property, because it's required:
+
+...
+ 
+const messageSchema = new mongoose.Schema(
+  {
+    text: {
+      type: String,
+      required: true,
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  },
+  { timestamps: true },
+);
+ 
+...
+Because of this database validation, Mongoose throws an error if there is an empty text, which needs to be addressed in our Express route where we create the message in the src/routes/message.js file:
+
+router.post('/', async (req, res) =&gt; {
+  let message;
+  try {
+    message = await req.context.models.Message.create({
+      text: req.body.text,
+      user: req.context.me.id,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.toString() });
+  }
+ 
+  return res.send(message);
+});
+Try again to execute the previous cURL operation. You may receive a similar output on the command line now:
+
+{"error":"ValidationError: text: Path `text` is required."}
+That's some progress, because we went from an unhandled error, that originated in our database layer and which left us with a stuck server, to handling the error in this particular Express route. Since we are using async/await, it's a common practice to use a try/catch block for these cases. In this case, we just returned a 400 HTTP status code which is commonly used for validation errors which are caused by a wrong input from a client application.
+
+If we would want to have error handling for each of our Express routes, we would end up with lots of try/catch blocks which mostly will perform all the same error handling for us. This wouldn't scale at all for a larger Express application with lots of REST API endpoints. Fortunately, we have Express' middleware to unify this error handling at one place in our src/index.js file:
+
+...
+ 
+app.use('/session', routes.session);
+app.use('/users', routes.user);
+app.use('/messages', routes.message);
+ 
+app.use((error, req, res, next) =&gt; {
+  return res.status(500).json({ error: error.toString() });
+});
+ 
+...
+Express handles any route with four arguments as error handling middleware, so it's important to list all four arguments for the error handling callback function here. It's also important to list this middleware after your REST API routes, because only this way all the errors happening in your REST API endpoints can be delegated to this error handling middleware.
+
+Let's get back to creating a message in src/routes/message.js. If you try the cURL request, you will not see the error handling happening if you don't catch any error there. In Express, errors have to be explicitly send via the next function to the middleware. Fortunately we don't need to use a try/catch block but just use the promise's catch method instead:
+
+router.post('/', async (req, res, next) =&gt; {
+  const message = await req.context.models.Message.create({
+    text: req.body.text,
+    user: req.context.me.id,
+  }).catch(next);
+ 
+  return res.send(message);
+});
+Now you should see the returned error when you try to create a message without a text again. This is already the gist of error handling in Express, however, I want to show you a few more things.
+
+First of all, we return always a generic HTTP status code 500 here. This may be alright for most validation errors that originate from our database, however, it shouldn't be the default case for all errors. Let's go through this scenario with another status code. Therefore, we will create a new Express route in our src/index.js file:
+
+app.use('/session', routes.session);
+app.use('/users', routes.user);
+app.use('/messages', routes.message);
+ 
+app.get('/some-new-route', function (req, res, next) {
+  res.status(301).redirect('/not-found');
+});
+ 
+app.use((error, req, res, next) =&gt; {
+  return res.status(500).json({ error: error.toString() });
+});
+Visiting this route in your browser will lead to a redirect to a 404 not found page (which we haven't implemented). A 301 HTTP status code always indicates a redirect and Express' redirect method lets us perform this redirect programmatically.
+
+Now we want to generalize the redirect for all routes that are not matched by our API. Therefore we can use a wildcard route with an * asterisk, but we need also make sure to use this route as the last route of all our routes:
+
+app.use('/session', routes.session);
+app.use('/users', routes.user);
+app.use('/messages', routes.message);
+ 
+app.get('*', function (req, res, next) {
+  res.status(301).redirect('/not-found');
+});
+Last, we could make our middleware deal with this case and let the wildcard route just throw an error:
+
+app.get('*', function (req, res, next) {
+  const error = new Error(
+    `${req.ip} tried to access ${req.originalUrl}`,
+  );
+ 
+  error.statusCode = 301;
+ 
+  next(error);
+});
+ 
+app.use((error, req, res, next) =&gt; {
+  if (!error.statusCode) error.statusCode = 500;
+ 
+  if (error.statusCode === 301) {
+    return res.status(301).redirect('/not-found');
+  }
+ 
+  return res
+    .status(error.statusCode)
+    .json({ error: error.toString() });
+});
+If no statusCode property is available at the error object (which is the default), we will set the status code of the HTTP header to 500. If there is a status code available, we will use this status code for the response. In the special case of having a 301 status code, we will perform a redirecting response.
+
+In the case of our message creation, we may want to specify a 400 HTTP status code for the error, as we did before, and therefore adapt the code in the src/routes/message.js file:
+
+router.post('/', async (req, res, next) =&gt; {
+  const message = await req.context.models.Message.create({
+    text: req.body.text,
+    user: req.context.me.id,
+  }).catch((error) =&gt; {
+    error.statusCode = 400;
+    next(error);
+  });
+ 
+  return res.send(message);
+});
+Optionally you could extract this as a reusable custom error which could be located in a src/utils/errors.js file. This new error class extends the commonly used JavaScript Error class. The only feature we add here is the 400 HTTP status code:
+
+export class BadRequestError extends Error {
+  constructor(error) {
+    super(error.message);
+ 
+    this.data = { error };
+    this.statusCode = 400;
+  }
+}
+Then again in the src/routes/message.js file, we could import this new error class and use it for the error handling. This way, we can react to the error and attach an appropriate status code to it:
+
+...
+ 
+import { BadRequestError } from '../utils/errors';
+ 
+...
+ 
+router.post('/', async (req, res, next) =&gt; {
+  const message = await req.context.models.Message.create({
+    text: req.body.text,
+    user: req.context.me.id,
+  }).catch((error) =&gt; next(new BadRequestError(error)));
+ 
+  return res.send(message);
+});
+If we would have to deal with different scenarios here, so not only a validation error but also other errors, we could implement the errors as classes with appropriate HTTP status codes again, and then decide conditionally on which error we want to use based on the thrown error coming from the database. After all, we always have control about which errors we pass to our error handling middleware and the middleware decides what to return to our users.
+
+Exercises:
+Confirm your source code for the last section. Be aware that the project cannot run properly in the Sandbox, because there is no database.
+Confirm your changes from the last section.
+Extend all other API endpoints where we perform database requests with proper error handling.
+Go through potential HTTP status codes that you may need for your error cases.</textarea><div></div></span></div><p style="margin: 0.75em;"></p></div>
+
+<input type="button" value="go last" onclick="button_flash(golast_block,event,this);" class="">
+
+<span style="display:inline-block;width:.2em"></span>
+<input type="button" value="add" onclick="add_block(event,this);">
+
+<span style="display:inline-block;width:.2em"></span>
+<input type="button" value="go-add" onclick="button_flash(goadd_block,event,this);" class="">
+
+<span style="display:inline-block;width: .2em"></span>
+<input type="button" value="go all" onclick="button_flash(do_all,event,this);" class="">
+
+<span style="display:inline-block;width:15%;"></span>
+<input type="button" value="delete" onclick="deletelast_block(event,this);">
+
+<p style="height: 10em"></p>
+
+<script language="JavaScript" type="text/javascript">
+pagestartup();
+--></script>
+
+</body></html>
